@@ -10,15 +10,19 @@ class Comodo(db.Model):
         nullable=False)
 
 
-    def __init__(self, largura, comprimento, name):
+    def __init__(self, largura, comprimento, name, casa_id):
         self.largura = largura
         self.comprimento = comprimento
         self.name = name
+        self.casa_id = casa_id
+
+    def calcula_area(self):
+        return self.comprimento * self.largura
 
 
 class ComodosSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'largura', 'comprimento')
+        fields = ('id', 'name', 'largura', 'comprimento', 'casa_id')
 
 
 comodo_schema = ComodosSchema()

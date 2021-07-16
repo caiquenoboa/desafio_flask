@@ -7,14 +7,13 @@ class Casa(db.Model):
     name = db.Column(db.String(50))
     comodos = db.relationship('Comodo', backref='casa', lazy=True)
 
-    def __init__(self, name, comodos):
-        self.comodos = comodos
+    def __init__(self, name):
         self.name = name
 
 
 class CasasSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'comodos')
+        fields = ('id', 'name')
 
 
 casa_schema = CasasSchema()
