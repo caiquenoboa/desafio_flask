@@ -1,3 +1,7 @@
 Flask
 flask_marshmallow
 flask_sqlalchemy
+marshmallow-sqlalchemy
+mysqlclient
+Flask-SQLAlchemy
+marshmallow
