@@ -9,5 +9,5 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-from .routes import ping, casa, comodo
-from .models import casa, comodo
+from .routes import ping, casa, comodo, bairro
+from .models import bairro, casa, comodo

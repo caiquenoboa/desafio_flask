@@ -30,7 +30,8 @@ def calcula_area(id):
 
 def post_casa():
     name = request.json['name']
-    casa = Casa(name)
+    bairro_id = request.json['bairro_id']
+    casa = Casa(name, bairro_id)
     try:
         db.session.add(casa)
         db.session.commit()
@@ -41,10 +42,12 @@ def post_casa():
 
 def update_casa(id):
     name = request.json['name']
+    bairro_id = request.json['bairro_id']
     casa = Casa.query.get(id)
     if not casa:
         return jsonify({'message': 'nothing found'}), 404
     casa.name = name
+    casa.bairro_id = bairro_id
     try:
         db.session.commit()
         result = casa_schema.dump(casa)
