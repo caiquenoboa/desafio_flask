@@ -10,6 +10,11 @@ def get_casas():
 def get_area(id):
    return casa.calcula_area(id)
 
+
+@app.route('/casa/preco/<id>', methods=['GET'])
+def get_preco(id):
+   return casa.calcula_preco(id)
+
 @app.route('/casa/<id>', methods=['GET'])
 def get_casa(id):
    return casa.get_casa(id)

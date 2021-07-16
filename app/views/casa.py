@@ -1,7 +1,8 @@
 from app import db
 from flask import request, jsonify
 from ..models.casa import Casa, casas_schema, casa_schema
-from ..models.comodo import Comodo, comodos_schema, comodo_schema
+from ..models.comodo import Comodo
+from ..models.bairro import Bairro
 
 
 def get_casas():
@@ -26,7 +27,20 @@ def calcula_area(id):
     area_total = 0
     for comodo in comodos:
         area_total += comodo.calcula_area()
-    return jsonify({'data': area_total})
+    return jsonify({'area': area_total})
+
+def calcula_preco(id):
+    casa = Casa.query.get(id)
+    if not casa:
+        return jsonify({'message': 'casa not found'}), 404
+    bairro = Bairro.query.get(casa.bairro_id)
+    comodos = Comodo.query.filter_by(casa_id=casa.id).all()
+    area_total = 0
+    for comodo in comodos:
+        area_total += comodo.calcula_area()
+    
+    preco = area_total * bairro.preco_por_metro
+    return jsonify({'preco': preco})
 
 def post_casa():
     name = request.json['name']
