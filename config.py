@@ -1,0 +1,3 @@
+DEBUG = True
+SQLALCHEMY_DATABASE_URI = 'mysql://root:123456@localhost:3306/desafioflask'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
