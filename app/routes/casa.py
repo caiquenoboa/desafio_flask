@@ -1,10 +1,11 @@
 from app import app
-from flask import jsonify
+from flask import request
 from ..views import casa
 
 @app.route('/casa', methods=['GET'])
 def get_casas():
-    return casa.get_casas()
+   order = request.args.get('order', default='preco')
+   return casa.get_casas(order)
 
 @app.route('/casa/area/<id>', methods=['GET'])
 def get_area(id):

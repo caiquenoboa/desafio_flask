@@ -26,11 +26,17 @@ def get_information_casa(casa):
     casa.preco = calcule_preco_util(casa.area, casa.bairro_id)
     casa.num_comodos = calcule_num_comodos_util(casa)
 
-def get_casas():
+def get_casas(order):
     casas = Casa.query.all()
     if casas:
         for casa in casas:
            get_information_casa(casa)
+        if order == 'preco':
+            casas.sort(key=lambda x:x.preco)
+        elif order == 'num_comodos':
+            casas.sort(key=lambda x:x.num_comodos)
+        elif order == 'area':
+            casas.sort(key=lambda x:x.area)
         result = casas_schema.dump(casas)
         return jsonify({'casas': result})
     return jsonify({'message': 'nothing found'}), 404
