@@ -5,7 +5,6 @@ from ..models.casa import Casa, casas_schema, casa_schema
 from ..models.comodo import Comodo, comodos_schema
 from ..models.bairro import Bairro
 
-
 def calcule_area_util(casa):
     comodos = Comodo.query.filter_by(casa_id=casa.id).all()
     area_total = 0
