@@ -1,5 +1,5 @@
 from app import db
-from flask import request, jsonify
+from flask import json, request, jsonify
 from .casa import delete_casa
 from ..models.bairro import Bairro, bairro_schema, bairros_schema
 from ..models.casa import Casa, casas_schema, casa_schema
@@ -64,3 +64,11 @@ def delete_bairro(id):
         return jsonify({'message': 'successfully deleted', 'bairro': result})
     except:
         return jsonify({'message': 'unable to delete'}), 500
+
+
+def get_casas_by_bairro(id):
+    casas = Casa.query.filter_by(bairro_id=id).all()
+    if not casas or len(casas) < 1:
+        return jsonify({'message': 'nothing found'}), 404
+    result = casas_schema.dump(casas)
+    return jsonify({'data': result})

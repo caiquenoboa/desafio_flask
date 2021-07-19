@@ -21,3 +21,7 @@ def update_bairro(id):
 @app.route('/bairro/<id>', methods=['DELETE'])
 def delete_bairro(id):
    return bairro.delete_bairro(id)
+
+@app.route('/bairro/<id>/casas')
+def get_casas_by_bairro(id):
+   return bairro.get_casas_by_bairro(id)

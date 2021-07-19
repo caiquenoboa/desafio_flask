@@ -110,8 +110,8 @@ def delete_casa(id):
 
 
 def get_comodos_by_casa_id(id):
-    comodos = Comodo.query.filter_by(casa_id=id)
-    if not comodos:
+    comodos = Comodo.query.filter_by(casa_id=id).all()
+    if not comodos or len(comodos) < 1:
         return jsonify({'message': 'nothing found'}), 404
     result = comodos_schema.dump(comodos)
     return jsonify({'comodos': result})
