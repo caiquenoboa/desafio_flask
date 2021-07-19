@@ -1,7 +1,7 @@
 from app import db
 from flask import request, jsonify
 from ..models.casa import Casa, casas_schema, casa_schema
-from ..models.comodo import Comodo
+from ..models.comodo import Comodo, comodos_schema
 from ..models.bairro import Bairro
 
 
@@ -107,3 +107,11 @@ def delete_casa(id):
         return jsonify({'message': 'successfully deleted', 'casa': result})
     except:
         return jsonify({'message': 'unable to delete'}), 500
+
+
+def get_comodos_by_casa_id(id):
+    comodos = Comodo.query.filter_by(casa_id=id)
+    if not comodos:
+        return jsonify({'message': 'nothing found'}), 404
+    result = comodos_schema.dump(comodos)
+    return jsonify({'comodos': result})

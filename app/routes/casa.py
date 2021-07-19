@@ -30,3 +30,7 @@ def update_casa(id):
 @app.route('/casa/<id>', methods=['DELETE'])
 def delete_casa(id):
    return casa.delete_casa(id)
+
+@app.route('/casa/<id>/comodos', methods=['GET'])
+def get_comodos_by_casa_id(id):
+   return casa.get_comodos_by_casa_id(id)
