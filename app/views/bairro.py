@@ -1,6 +1,6 @@
 from app import db
 from flask import json, request, jsonify
-from .casa import delete_casa, get_information_casa
+from .casa import delete_casa, get_information_casa, order_casas
 from ..models.bairro import Bairro, bairro_schema, bairros_schema
 from ..models.casa import Casa, casas_schema, casa_schema
 from ..models.comodo import Comodo, comodos_schema, comodo_schema
@@ -72,13 +72,6 @@ def get_casas_by_bairro(id, order):
         return jsonify({'message': 'nothing found'}), 404
     for casa in casas:
         get_information_casa(casa)
-    
-    if order == 'preco':
-        casas.sort(key=lambda x:x.preco)
-    elif order == 'num_comodos':
-        casas.sort(key=lambda x:x.num_comodos)
-    elif order == 'area':
-        casas.sort(key=lambda x:x.area)
-    
+    order_casas(casas, order)
     result = casas_schema.dump(casas)
     return jsonify({'data': result})
