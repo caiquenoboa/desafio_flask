@@ -1,5 +1,5 @@
 from app import app
-from flask import jsonify
+from flask import request
 from ..views import bairro
 
 @app.route('/bairro', methods=['GET'])
@@ -24,4 +24,5 @@ def delete_bairro(id):
 
 @app.route('/bairro/<id>/casas')
 def get_casas_by_bairro(id):
-   return bairro.get_casas_by_bairro(id)
+   order = request.args.get('order', default='preco')
+   return bairro.get_casas_by_bairro(id, order)

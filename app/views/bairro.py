@@ -66,11 +66,19 @@ def delete_bairro(id):
         return jsonify({'message': 'unable to delete'}), 500
 
 
-def get_casas_by_bairro(id):
+def get_casas_by_bairro(id, order):
     casas = Casa.query.filter_by(bairro_id=id).all()
     if not casas or len(casas) < 1:
         return jsonify({'message': 'nothing found'}), 404
     for casa in casas:
         get_information_casa(casa)
+    
+    if order == 'preco':
+        casas.sort(key=lambda x:x.preco)
+    elif order == 'num_comodos':
+        casas.sort(key=lambda x:x.num_comodos)
+    elif order == 'area':
+        casas.sort(key=lambda x:x.area)
+    
     result = casas_schema.dump(casas)
     return jsonify({'data': result})
