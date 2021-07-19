@@ -2,9 +2,14 @@ from app import db
 from flask import request, jsonify
 from ..models.comodo import Comodo, comodos_schema, comodo_schema
 
+def get_comodo_information(comodo):
+    comodo.area = comodo.calcula_area()
+    return comodo
 
 def get_comodos():
     comodos = Comodo.query.all()
+    for comodo in comodos:
+        get_comodo_information(comodo)
     if comodos:
         result = comodos_schema.dump(comodos)
         return jsonify({'comodos': result})
@@ -12,6 +17,7 @@ def get_comodos():
 
 def get_comodo(id):
     comodo = Comodo.query.get(id)
+    get_comodo_information(comodo)
     if not comodo:
         return jsonify({'message': 'comodo not found'}), 404
     result = comodo_schema.dump(comodo)
@@ -29,6 +35,7 @@ def post_comodo():
     comprimento = request.json['comprimento']
     casa_id = request.json['casa_id']
     comodo = Comodo(largura, comprimento, name, casa_id)
+    get_comodo_information(comodo)
     try:
         db.session.add(comodo)
         db.session.commit()
@@ -43,11 +50,14 @@ def update_comodo(id):
     comprimento = request.json['comprimento']
     casa_id = request.json['casa_id']
     comodo = Comodo.query.get(id)
+    if not comodo:
+        return jsonify({'message', 'comodo not found'}), 404
     try:
         comodo.name = name
         comodo.largura = largura
         comodo.comprimento = comprimento
         comodo.casa_id = casa_id
+        get_comodo_information(comodo)
         db.session.commit()
         result = comodo_schema.dump(comodo)
         return jsonify({'message': 'successfully updated', 'comodo': result}), 201
@@ -58,7 +68,6 @@ def delete_comodo(id):
     comodo = Comodo.query.get(id)
     if not comodo:
         return jsonify({'message': 'nothing found'}), 404
-    
     try:
         db.session.delete(comodo)
         db.session.commit()

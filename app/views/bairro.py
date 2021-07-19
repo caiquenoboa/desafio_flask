@@ -1,6 +1,6 @@
 from app import db
 from flask import json, request, jsonify
-from .casa import delete_casa
+from .casa import delete_casa, get_information_casa
 from ..models.bairro import Bairro, bairro_schema, bairros_schema
 from ..models.casa import Casa, casas_schema, casa_schema
 from ..models.comodo import Comodo, comodos_schema, comodo_schema
@@ -70,5 +70,7 @@ def get_casas_by_bairro(id):
     casas = Casa.query.filter_by(bairro_id=id).all()
     if not casas or len(casas) < 1:
         return jsonify({'message': 'nothing found'}), 404
+    for casa in casas:
+        get_information_casa(casa)
     result = casas_schema.dump(casas)
     return jsonify({'data': result})

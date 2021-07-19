@@ -1,5 +1,6 @@
 from app import db
 from flask import request, jsonify
+from .comodo import get_comodo_information
 from ..models.casa import Casa, casas_schema, casa_schema
 from ..models.comodo import Comodo, comodos_schema
 from ..models.bairro import Bairro
@@ -113,5 +114,7 @@ def get_comodos_by_casa_id(id):
     comodos = Comodo.query.filter_by(casa_id=id).all()
     if not comodos or len(comodos) < 1:
         return jsonify({'message': 'nothing found'}), 404
+    for comodo in comodos:
+        get_comodo_information(comodo)
     result = comodos_schema.dump(comodos)
     return jsonify({'comodos': result})
